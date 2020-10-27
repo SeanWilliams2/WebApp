@@ -10,5 +10,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        PageControlFragment palletFragment = new PageControlFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.container_1,palletFragment)
+                .commit();
     }
 }

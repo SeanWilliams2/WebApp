@@ -8,21 +8,23 @@
 
     <EditText
         android:id="@+id/editText"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:orientation="horizontal"
-        tools:ignore="Suspicious0dp">
-
+        android:layout_gravity="left"
+        android:orientation="horizontal">
     </EditText>
-
     <ImageButton
         android:id="@+id/goButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:layout_marginEnd="50dp"
         android:orientation="horizontal"
-        android:contentDescription="HELLO"
+        android:adjustViewBounds="true"
+        android:maxWidth="60dp"
+        android:maxHeight="60dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/gobutton"
         tools:ignore="Suspicious0dp">
 
     </ImageButton>
@@ -31,8 +33,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:layout_marginEnd="100dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="60dp"
+        android:maxHeight="60dp"
+        android:scaleType="fitCenter"
         android:orientation="horizontal"
-        android:contentDescription="HELLO"
+        android:src="@drawable/backwardbutton"
         tools:ignore="Suspicious0dp">
 
     </ImageButton>
@@ -43,7 +50,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:orientation="horizontal"
-        android:contentDescription="HELLO"
+        android:adjustViewBounds="true"
+        android:maxWidth="60dp"
+        android:maxHeight="60dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/forwardbutton"
         tools:ignore="Suspicious0dp">
 
     </ImageButton>
