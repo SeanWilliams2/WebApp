@@ -1,5 +1,7 @@
 package edu.temple.webapp;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +9,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,9 +22,12 @@ import android.view.ViewGroup;
  */
 public class PageViewerFragment extends Fragment {
 
+    String savedURL;
+    WebView myWebView;
+    private Bundle webViewBundle;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
+    private static final String KEY_URL = "urlkey";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
@@ -28,20 +38,12 @@ public class PageViewerFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PageViewerFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static PageViewerFragment newInstance(String param1, String param2) {
+    public static PageViewerFragment newInstance(String url) {
         PageViewerFragment fragment = new PageViewerFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(KEY_URL, url);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,16 +51,77 @@ public class PageViewerFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        Bundle bundle;
+        setRetainInstance(true);
     }
-
+    public void onPause() {
+        super.onPause();
+        webViewBundle = new Bundle();
+        myWebView.saveState(webViewBundle);
+    }
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_page_viewer, container, false);
+        View l = inflater.inflate(R.layout.fragment_page_viewer, container, false);
+        myWebView = (WebView) l.findViewById(R.id.webview);
+        myWebView.getSettings().setJavaScriptEnabled(true);
+        myWebView.setWebViewClient(new MyWebViewClient());
+
+        if(webViewBundle != null)
+        {
+            myWebView.restoreState(webViewBundle);
+        }
+
+        return l;
+    }
+    public String loadPage(String url)
+    {
+        if(url != null)
+        {
+            try {
+                URL obj = new URL(url);
+                myWebView.loadUrl(url);
+            }
+            catch (MalformedURLException e)
+            {
+                url = "https://www." + url;
+                myWebView.loadUrl(url);
+            }
+        }
+
+        return url;
+    }
+
+    public void goBack()
+    {
+        if(myWebView.canGoBack())
+        {
+            myWebView.goBack();
+        }
+
+    }
+    public void goForward()
+    {
+        if(myWebView.canGoForward())
+        {
+            myWebView.goForward();
+
+        }
+
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView webView, String url) {
+            return false;
+        }
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            ((changeEditText) getActivity()).changeText(url);
+        }
+    }
+    interface changeEditText {
+        public void changeText(String url);
     }
 }
