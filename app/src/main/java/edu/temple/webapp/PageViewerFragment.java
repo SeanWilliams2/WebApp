@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,7 @@ import java.net.URL;
  * Use the {@link PageViewerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PageViewerFragment extends Fragment {
+public class PageViewerFragment extends Fragment implements Parcelable {
 
     String savedURL;
     WebView myWebView;
@@ -123,4 +125,39 @@ public class PageViewerFragment extends Fragment {
     interface changeEditText {
         public void changeText(String url);
     }
+
+    protected PageViewerFragment(Parcel in) {
+        savedURL = in.readString();
+        myWebView = (WebView) in.readValue(WebView.class.getClassLoader());
+        webViewBundle = in.readBundle();
+        mParam1 = in.readString();
+        mParam2 = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(savedURL);
+        dest.writeValue(myWebView);
+        dest.writeBundle(webViewBundle);
+        dest.writeString(mParam1);
+        dest.writeString(mParam2);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<PageViewerFragment> CREATOR = new Parcelable.Creator<PageViewerFragment>() {
+        @Override
+        public PageViewerFragment createFromParcel(Parcel in) {
+            return new PageViewerFragment(in);
+        }
+
+        @Override
+        public PageViewerFragment[] newArray(int size) {
+            return new PageViewerFragment[size];
+        }
+    };
 }

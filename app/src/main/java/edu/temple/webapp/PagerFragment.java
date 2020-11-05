@@ -34,7 +34,7 @@ public class PagerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private int lastPosition = 0;
-    ArrayList<PageViewerFragment> fragments = new ArrayList<>();
+    private static ArrayList<PageViewerFragment> fragments;
     ViewPager viewpager;
     public PagerFragment() {
         // Required empty public constructor
@@ -49,12 +49,11 @@ public class PagerFragment extends Fragment {
      * @return A new instance of fragment PagerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PagerFragment newInstance(String param1, String param2) {
-        PagerFragment fragment = new PagerFragment();
+    public static void newInstance(ArrayList<PageViewerFragment> fragment) {
+        fragments = new ArrayList<PageViewerFragment>();
+        fragments = (ArrayList<PageViewerFragment>)fragment.clone();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(fragments);
-        fragment.setArguments(args);
-        return fragment;
+        args.putParcelableArrayList("hello",fragments);
     }
 
     @Override
@@ -100,13 +99,6 @@ public class PagerFragment extends Fragment {
 
         }
         public void onPageSelected(int position) {
-            if(lastPosition < position) {
-                lastPosition++;
-                updateViewer();
-            } else {
-                lastPosition--;
-                goBack();
-            }
 
         }
 

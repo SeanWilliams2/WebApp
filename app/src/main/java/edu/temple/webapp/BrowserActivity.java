@@ -2,6 +2,7 @@ package edu.temple.webapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pageControler.newInstance("");
-        pagerfragment.newInstance();
+        fragments.add(new PageViewerFragment());
+        pagerfragment.newInstance(fragments);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.container_1,pageControler)
