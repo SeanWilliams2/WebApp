@@ -4,40 +4,51 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class BrowserActivity extends AppCompatActivity implements PageControlFragment.ButtonClickInterface, PageViewerFragment.changeEditText {
+import java.util.ArrayList;
+
+public class BrowserActivity extends AppCompatActivity implements PageControlFragment.ButtonClickInterface, PageViewerFragment.changeEditText, BrowserControlFragment.tabButtonClickInterface {
     PageControlFragment pageControler = new PageControlFragment();
-    PageViewerFragment pageViewer = new PageViewerFragment();
+    PagerFragment pagerfragment = new PagerFragment();
+    BrowserControlFragment browsercontrol = new BrowserControlFragment();
+    ArrayList<PageViewerFragment> fragments = new ArrayList<PageViewerFragment>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pageControler.newInstance("");
-        pageViewer.newInstance("");
+        pagerfragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.container_1,pageControler)
-                .add(R.id.container_2,pageViewer)
+                .add(R.id.container_2,pagerfragment)
+                .add(R.id.container_3,browsercontrol)
                 .commit();
     }
 
     @Override
     public void goButtonClick(String str) {
-        String url = pageViewer.loadPage(str);
+        String url = pagerfragment.loadPage(str);
         pageControler.updateEditText(url);
     }
 
     @Override
     public void backButtonClick(String url) {
-        pageViewer.goBack();
+        pagerfragment.goBack();
     }
 
     @Override
     public void forwardButtonClick(String url) {
-        pageViewer.goForward();
+        pagerfragment.goForward();
     }
 
     public void changeText(String url)
     {
         pageControler.updateEditText(url);
+    }
+
+    public void tabButtonClick()
+    {
+        fragments.add(new PageViewerFragment());
+        pagerfragment.fragmentChange(fragments);
     }
 }

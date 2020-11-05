@@ -26,7 +26,6 @@
         android:scaleType="fitCenter"
         android:src="@drawable/gobutton"
         tools:ignore="Suspicious0dp">
-
     </ImageButton>
     <ImageButton
         android:id="@+id/backButton"

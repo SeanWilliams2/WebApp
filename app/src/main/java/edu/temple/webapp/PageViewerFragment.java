@@ -100,7 +100,6 @@ public class PageViewerFragment extends Fragment {
         {
             myWebView.goBack();
         }
-
     }
     public void goForward()
     {
