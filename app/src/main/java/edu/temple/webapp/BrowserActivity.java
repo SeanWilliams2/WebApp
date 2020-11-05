@@ -11,8 +11,8 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pageControler.newInstance("https://wwww.google.com");
-        pageViewer.newInstance("https://www.google.com");
+        pageControler.newInstance("");
+        pageViewer.newInstance("");
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.container_1,pageControler)
