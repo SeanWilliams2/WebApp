@@ -35,6 +35,7 @@ public class PagerFragment extends Fragment {
     private String mParam2;
     private int lastPosition = 0;
     private static ArrayList<PageViewerFragment> fragments;
+    private PageViewerFragment currPageViewer;
     ViewPager viewpager;
     public PagerFragment() {
         // Required empty public constructor
@@ -71,11 +72,14 @@ public class PagerFragment extends Fragment {
         // Inflate the layout for this fragment
         View l = inflater.inflate(R.layout.fragment_pager, container, false);
         viewpager = l.findViewById(R.id.viewpager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        final ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        viewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                adapter.pageChanged(position);
+            }
+        });
         viewpager.setAdapter(adapter);
-        fragments.add(new PageViewerFragment());
-        viewpager.getAdapter().notifyDataSetChanged();
-
         return l;
     }
 
@@ -96,18 +100,22 @@ public class PagerFragment extends Fragment {
         }
 
         public void pageChanged(int position) {
-
+            fragments.get(position).loadPage(fragments.get(position).getURL());
+            ((changeEditText) getActivity()).changeText(fragments.get(position).getURL());
         }
         public void onPageSelected(int position) {
-
         }
 
     }
+    interface changeEditText {
+        public void changeText(String url);
+    }
     public void updateViewer()
     {
-        fragments.add(new PageViewerFragment());
         viewpager.getAdapter().notifyDataSetChanged();
         lastPosition++;
+        viewpager.setCurrentItem(lastPosition);
+
     }
     public String loadPage(String url)
     {
@@ -122,8 +130,12 @@ public class PagerFragment extends Fragment {
     {
         fragments.get(lastPosition).goForward();
     }
+
     public void fragmentChange(ArrayList<PageViewerFragment> realFragments)
     {
         fragments = (ArrayList<PageViewerFragment>)realFragments.clone();
+        updateViewer();
     }
+
+
 }

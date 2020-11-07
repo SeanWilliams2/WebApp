@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
-public class BrowserActivity extends AppCompatActivity implements PageControlFragment.ButtonClickInterface, PageViewerFragment.changeEditText, BrowserControlFragment.tabButtonClickInterface {
+public class BrowserActivity extends AppCompatActivity implements PageControlFragment.ButtonClickInterface, PageViewerFragment.changeEditText, BrowserControlFragment.tabButtonClickInterface, PagerFragment.changeEditText {
     PageControlFragment pageControler = new PageControlFragment();
     PagerFragment pagerfragment = new PagerFragment();
     BrowserControlFragment browsercontrol = new BrowserControlFragment();
@@ -48,9 +48,9 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
         pageControler.updateEditText(url);
     }
 
-    public void tabButtonClick()
-    {
+    public void tabButtonClick() {
         fragments.add(new PageViewerFragment());
         pagerfragment.fragmentChange(fragments);
+        pageControler.updateEditText("");
     }
 }

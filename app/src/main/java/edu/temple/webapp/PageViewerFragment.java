@@ -24,6 +24,7 @@ import java.net.URL;
  */
 public class PageViewerFragment extends Fragment implements Parcelable {
 
+    String currURL;
     String savedURL;
     WebView myWebView;
     private Bundle webViewBundle;
@@ -92,10 +93,13 @@ public class PageViewerFragment extends Fragment implements Parcelable {
                 myWebView.loadUrl(url);
             }
         }
-
+        currURL = url;
         return url;
     }
-
+    public String getURL()
+    {
+        return currURL;
+    }
     public void goBack()
     {
         if(myWebView.canGoBack())
@@ -119,7 +123,7 @@ public class PageViewerFragment extends Fragment implements Parcelable {
             return false;
         }
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            ((changeEditText) getActivity()).changeText(url);
+            //((changeEditText) getActivity()).changeText(getURL());
         }
     }
     interface changeEditText {
