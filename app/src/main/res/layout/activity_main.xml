@@ -10,32 +10,38 @@
 
     <FrameLayout
         android:id="@+id/container_3"
-        android:layout_width="410dp"
-        android:layout_height="82dp"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_marginTop="32dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/container_1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="Suspicious0dp"></FrameLayout>
-
+        tools:ignore="Suspicious0dp" />
 
     <FrameLayout
         android:id="@+id/container_1"
-        android:layout_width="402dp"
+        android:layout_width="match_parent"
         android:layout_height="73dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/container_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/container_3"
-        tools:ignore="Suspicious0dp"></FrameLayout>
+        tools:ignore="Suspicious0dp" />
 
     <FrameLayout
         android:id="@+id/container_2"
-        android:layout_width="411dp"
-        android:layout_height="574dp"
+        android:layout_width="match_parent"
+        android:layout_height="510dp"
+        android:layout_marginBottom="6dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/container_1"
         tools:ignore="Suspicious0dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

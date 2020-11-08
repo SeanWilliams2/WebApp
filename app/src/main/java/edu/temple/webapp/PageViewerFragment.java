@@ -112,18 +112,27 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         if(myWebView.canGoForward())
         {
             myWebView.goForward();
-
         }
 
     }
 
     private class MyWebViewClient extends WebViewClient {
+
+        private String currentUrl;
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
             return false;
         }
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            //((changeEditText) getActivity()).changeText(getURL());
+            ((changeEditText) getActivity()).changeText(url);
+        }
+        @Override
+        public void onLoadResource(WebView view, String url) {
+            super.onLoadResource(view, url);
+            this.currentUrl = url;
+        }
+        public String getUrl() {
+            return this.currentUrl;
         }
     }
     interface changeEditText {

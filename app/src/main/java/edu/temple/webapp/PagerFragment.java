@@ -77,6 +77,7 @@ public class PagerFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 adapter.pageChanged(position);
+                lastPosition = position;
             }
         });
         viewpager.setAdapter(adapter);
