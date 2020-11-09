@@ -24,6 +24,7 @@ import java.net.URL;
  */
 public class PageViewerFragment extends Fragment implements Parcelable {
 
+    int lastPosition;
     String currURL;
     String savedURL;
     WebView myWebView;
@@ -57,11 +58,13 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         Bundle bundle;
         setRetainInstance(true);
     }
+
     public void onPause() {
         super.onPause();
         webViewBundle = new Bundle();
         myWebView.saveState(webViewBundle);
     }
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,23 +75,19 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new MyWebViewClient());
 
-        if(webViewBundle != null)
-        {
+        if (webViewBundle != null) {
             myWebView.restoreState(webViewBundle);
         }
-
+        setURL("");
         return l;
     }
-    public String loadPage(String url)
-    {
-        if(url != null)
-        {
+
+    public String loadPage(String url) {
+        if (url != null) {
             try {
                 URL obj = new URL(url);
                 myWebView.loadUrl(url);
-            }
-            catch (MalformedURLException e)
-            {
+            } catch (MalformedURLException e) {
                 url = "https://www." + url;
                 myWebView.loadUrl(url);
             }
@@ -96,21 +95,19 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         currURL = url;
         return url;
     }
-    public String getURL()
-    {
-        return currURL;
+
+    public String getURL() {
+        return myWebView.getUrl();
     }
-    public void goBack()
-    {
-        if(myWebView.canGoBack())
-        {
+
+    public void goBack() {
+        if (myWebView.canGoBack()) {
             myWebView.goBack();
         }
     }
-    public void goForward()
-    {
-        if(myWebView.canGoForward())
-        {
+
+    public void goForward() {
+        if (myWebView.canGoForward()) {
             myWebView.goForward();
         }
 
@@ -119,24 +116,36 @@ public class PageViewerFragment extends Fragment implements Parcelable {
     private class MyWebViewClient extends WebViewClient {
 
         private String currentUrl;
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView webView, String url) {
             return false;
         }
+
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             ((changeEditText) getActivity()).changeText(url);
+
         }
+
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
             this.currentUrl = url;
+            currURL = url;
         }
+
         public String getUrl() {
             return this.currentUrl;
         }
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            ((changeEditText) getActivity()).changeTitle(view.getTitle());
+        }
     }
+
     interface changeEditText {
         public void changeText(String url);
+        public void changeTitle(String title);
     }
 
     protected PageViewerFragment(Parcel in) {
@@ -173,4 +182,25 @@ public class PageViewerFragment extends Fragment implements Parcelable {
             return new PageViewerFragment[size];
         }
     };
+
+    public String toString() {
+        return getURL();
+    }
+
+    public void setURL(String url) {
+        currURL = url;
+    }
+
+    public int getCurrFragment() {
+        return lastPosition;
+    }
+
+    public void setCurrFragment(int position) {
+        lastPosition = position;
+    }
+
+    public String getTitle()
+    {
+        return myWebView.getTitle();
+    }
 }

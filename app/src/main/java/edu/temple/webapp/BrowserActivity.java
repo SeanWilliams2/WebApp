@@ -7,10 +7,11 @@ import android.os.Bundle;
 
 import java.util.ArrayList;
 
-public class BrowserActivity extends AppCompatActivity implements PageControlFragment.ButtonClickInterface, PageViewerFragment.changeEditText, BrowserControlFragment.tabButtonClickInterface, PagerFragment.changeEditText {
+public class BrowserActivity extends AppCompatActivity implements PageControlFragment.ButtonClickInterface, PageViewerFragment.changeEditText, BrowserControlFragment.tabButtonClickInterface, PagerFragment.changeEditText, PageListFragment.changePager {
     PageControlFragment pageControler = new PageControlFragment();
     PagerFragment pagerfragment = new PagerFragment();
     BrowserControlFragment browsercontrol = new BrowserControlFragment();
+    PageListFragment pagelist = new PageListFragment();
     ArrayList<PageViewerFragment> fragments = new ArrayList<PageViewerFragment>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +20,13 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
         pageControler.newInstance("");
         fragments.add(new PageViewerFragment());
         pagerfragment.newInstance(fragments);
+        pagelist.newInstance(fragments);
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.container_1,pageControler)
                 .add(R.id.container_2,pagerfragment)
                 .add(R.id.container_3,browsercontrol)
+                .add(R.id.container_4,pagelist)
                 .commit();
     }
 
@@ -31,6 +34,7 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
     public void goButtonClick(String str) {
         String url = pagerfragment.loadPage(str);
         pageControler.updateEditText(url);
+        //pagelist.fragmentChange(fragments,pagerfragment.getLastPosition());
     }
 
     @Override
@@ -50,7 +54,18 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
 
     public void tabButtonClick() {
         fragments.add(new PageViewerFragment());
-        pagerfragment.fragmentChange(fragments);
+        int position =  pagerfragment.fragmentChange(fragments);
+        pagelist.newItem(fragments,position);
         pageControler.updateEditText("");
     }
+    public void changeTitle(String title)
+    {
+        BrowserActivity.this.setTitle(title);
+        pagelist.fragmentChange(fragments,pagerfragment.getLastPosition());
+    }
+    public void changePager(int position)
+    {
+        pagerfragment.updateViewer(position);
+    }
+
 }

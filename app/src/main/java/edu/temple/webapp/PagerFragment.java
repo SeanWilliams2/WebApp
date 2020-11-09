@@ -111,12 +111,17 @@ public class PagerFragment extends Fragment {
     interface changeEditText {
         public void changeText(String url);
     }
-    public void updateViewer()
+    public int updateViewer()
     {
         viewpager.getAdapter().notifyDataSetChanged();
         lastPosition++;
         viewpager.setCurrentItem(lastPosition);
-
+        return lastPosition;
+    }
+    public void updateViewer(int position)
+    {
+        lastPosition = position;
+        viewpager.setCurrentItem(lastPosition);
     }
     public String loadPage(String url)
     {
@@ -132,11 +137,15 @@ public class PagerFragment extends Fragment {
         fragments.get(lastPosition).goForward();
     }
 
-    public void fragmentChange(ArrayList<PageViewerFragment> realFragments)
+    public int fragmentChange(ArrayList<PageViewerFragment> realFragments)
     {
         fragments = (ArrayList<PageViewerFragment>)realFragments.clone();
-        updateViewer();
-    }
+        return updateViewer();
 
+    }
+    public int getLastPosition()
+    {
+        return lastPosition;
+    }
 
 }
