@@ -123,8 +123,7 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         }
 
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            ((changeEditText) getActivity()).changeText(url);
-
+            //((changeEditText) getActivity()).changeText(url);
         }
 
         @Override
@@ -139,13 +138,13 @@ public class PageViewerFragment extends Fragment implements Parcelable {
         }
         @Override
         public void onPageFinished(WebView view, String url) {
-            ((changeEditText) getActivity()).changeTitle(view.getTitle());
+            ((changeEditText) getActivity()).changeTitle(view.getTitle(), url);
         }
     }
 
     interface changeEditText {
         public void changeText(String url);
-        public void changeTitle(String title);
+        public void changeTitle(String title, String url);
     }
 
     protected PageViewerFragment(Parcel in) {

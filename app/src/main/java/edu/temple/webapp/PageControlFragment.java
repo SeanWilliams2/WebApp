@@ -91,6 +91,11 @@ public class PageControlFragment extends Fragment {
         editText.setText(str);
     }
 
+
+    public void refresh() {
+        editText.setText(savedEdittext);
+    }
+
     interface ButtonClickInterface {
         void goButtonClick(String url);
         void backButtonClick(String url);

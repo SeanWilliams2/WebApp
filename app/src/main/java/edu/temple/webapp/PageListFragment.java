@@ -30,27 +30,33 @@ public class PageListFragment extends Fragment {
     private ListView listView;
     private int oldPos;
     private ArrayList<PageViewerFragment> fragments = new ArrayList<PageViewerFragment>();
-    private ArrayList<String> websites = new ArrayList<String>();
+    private static ArrayList<String> websites = new ArrayList<String>();
     public PageListFragment() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static PageListFragment newInstance(ArrayList<PageViewerFragment> arr) {
+    public static PageListFragment newInstance(ArrayList<PageViewerFragment> arr, ArrayList<String> sites) {
         PageListFragment fragment = new PageListFragment();
         Bundle args = new Bundle();
+        websites = (ArrayList<String>) sites.clone();
         args.putParcelableArrayList(ARG_PARAM1, arr);
+        args.putStringArrayList(ARG_PARAM2, websites);
         fragment.setArguments(args);
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        //setRetainInstance(true);
+        Bundle bundle;
+        if ((bundle = getArguments()) != null) {
+            fragments = (ArrayList<PageViewerFragment>) bundle.getParcelableArrayList(ARG_PARAM1).clone();
+            websites = (ArrayList<String>) bundle.getStringArrayList(ARG_PARAM2).clone();
         }
     }
 
@@ -76,13 +82,17 @@ public class PageListFragment extends Fragment {
     {
         websites.add(new String());
         fragments = (ArrayList<PageViewerFragment>)realFragments.clone();
-        websites.set(position,fragments.get(position).getTitle());
         updateList();
+        websites.set(position,fragments.get(position).getTitle());
     }
     public void fragmentChange(ArrayList<PageViewerFragment> realFragments, int position)
     {
         fragments = (ArrayList<PageViewerFragment>)realFragments.clone();
-        websites.set(position,fragments.get(position).getTitle());
+        while(websites.size() < fragments.size())
+        {
+            websites.add(new String());
+        }
+        websites.set(position, fragments.get(position).getTitle());
         updateList();
     }
     public void updateList()
@@ -90,7 +100,17 @@ public class PageListFragment extends Fragment {
         ArrayAdapter adapter = (ArrayAdapter) listView.getAdapter();
         adapter.notifyDataSetChanged();
     }
-
+    public void setWebsites(int size)
+    {
+        while(websites.size() < size)
+        {
+            websites.add(new String());
+        }
+    }
+    public void updateWebsites(ArrayList<String> sites)
+    {
+        websites = (ArrayList<String>) sites.clone();
+    }
     interface changePager {
         public void changePager(int position);
     }

@@ -3,6 +3,7 @@ package edu.temple.webapp;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
@@ -10,6 +11,8 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +30,8 @@ public class PagerFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String FRAGMENTS_KEY = "fragmentskey";
+    private static final String VALUE_KEY = "doesntmatter";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -41,29 +44,31 @@ public class PagerFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PagerFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static void newInstance(ArrayList<PageViewerFragment> fragment) {
+    public static void newInstance(ArrayList<PageViewerFragment> fragment, int lastPosition) {
         fragments = new ArrayList<PageViewerFragment>();
         fragments = (ArrayList<PageViewerFragment>)fragment.clone();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("hello",fragments);
+        args.putParcelableArrayList(FRAGMENTS_KEY,fragments);
+        args.putInt(VALUE_KEY, lastPosition);
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+         //super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            fragments = (ArrayList<PageViewerFragment>) getArguments().getParcelableArrayList(FRAGMENTS_KEY).clone();
+            viewpager.getAdapter().notifyDataSetChanged();
+            lastPosition = getArguments().getInt(VALUE_KEY);
+            fragments.get(lastPosition).loadPage(fragments.get(lastPosition).getURL());
         }
+
     }
 
     @Override
@@ -80,20 +85,26 @@ public class PagerFragment extends Fragment {
                 lastPosition = position;
             }
         });
+        viewpager.setOffscreenPageLimit(1);
         viewpager.setAdapter(adapter);
         return l;
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
-        public ViewPagerAdapter(FragmentManager fragmentManager) {
-            super(fragmentManager);
+        private final FragmentManager mFragmentManager;
+        //private final FragmentActivity mContext;
+        public ViewPagerAdapter(FragmentManager fm) {
+
+            super(fm);
+            this.mFragmentManager = fm;
         }
 
         @Override
         public Fragment getItem(int position) {
             return fragments.get(position);
         }
+
 
         @Override
         public int getCount() {
@@ -103,7 +114,18 @@ public class PagerFragment extends Fragment {
         public void pageChanged(int position) {
             fragments.get(position).loadPage(fragments.get(position).getURL());
             ((changeEditText) getActivity()).changeText(fragments.get(position).getURL());
+
         }
+        @Override
+        public void restoreState(Parcelable state, ClassLoader loader) {
+            try {
+                super.restoreState(state, loader);
+            } catch (Exception e) {
+                Log.e("TAG", "Error Restore State of Fragment : " + e.getMessage(), e);
+            }
+        }
+
+
         public void onPageSelected(int position) {
         }
 
@@ -111,10 +133,14 @@ public class PagerFragment extends Fragment {
     interface changeEditText {
         public void changeText(String url);
     }
+    public void refresh()
+    {
+        viewpager.getAdapter().notifyDataSetChanged();
+    }
     public int updateViewer()
     {
         viewpager.getAdapter().notifyDataSetChanged();
-        lastPosition++;
+        lastPosition = fragments.size();
         viewpager.setCurrentItem(lastPosition);
         return lastPosition;
     }
@@ -125,6 +151,7 @@ public class PagerFragment extends Fragment {
     }
     public String loadPage(String url)
     {
+        currPageViewer = (PageViewerFragment) fragments.get(lastPosition);
         return fragments.get(lastPosition).loadPage(url);
     }
 
@@ -141,11 +168,18 @@ public class PagerFragment extends Fragment {
     {
         fragments = (ArrayList<PageViewerFragment>)realFragments.clone();
         return updateViewer();
-
     }
     public int getLastPosition()
     {
         return lastPosition;
+    }
+
+    public String getCurUrl() { return fragments.get(getLastPosition()).getURL(); }
+
+    public PageViewerFragment getCurViewer() { return (PageViewerFragment) currPageViewer; }
+    public void setCurUrl(String url, int position)
+    {
+        fragments.get(position).setURL(url);
     }
 
 }
