@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
@@ -19,6 +21,8 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
     private static PageListFragment pagelist = new PageListFragment();
     private static ArrayList<PageViewerFragment> fragments = new ArrayList<PageViewerFragment>();
     private static ArrayList<String> websites = new ArrayList<String>();
+    private static ArrayList<String> bookmarks = new ArrayList<String>();
+    private static ArrayList<String> urls = new ArrayList<String>();
     private int lastPosition = 0;
     private boolean pageListOn = false;
     @Override
@@ -68,8 +72,7 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
                         pagelist.updateWebsites(websites);
 
                     }
-
-
+                    
                 pageControler = (PageControlFragment) getSupportFragmentManager().findFragmentById(R.id.page_controller);
                 pagerfragment = (PagerFragment) getSupportFragmentManager().findFragmentById(R.id.page_viewer);
                 browsercontrol = (BrowserControlFragment) getSupportFragmentManager().findFragmentById(R.id.browser_control);
@@ -139,11 +142,40 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
         pagerfragment.updateViewer(position);
         changeText(pagerfragment.getCurUrl());
     }
-
+    public void openActivity()
+    {
+        Intent intent = new Intent(BrowserActivity.this, BookmarkActivity.class);
+        intent.putExtra("bookmarks",bookmarks);
+        intent.putExtra("urls", urls);
+        startActivityForResult(intent, 2);
+    }
+    public void saveBookmark()
+    {
+        lastPosition = pagerfragment.getLastPosition();
+        bookmarks.add(fragments.get(lastPosition).getTitle());
+        urls.add(fragments.get(lastPosition).getURL());
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (2) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    bookmarks = data.getStringArrayListExtra("bookmarks");
+                    String temp = data.getStringExtra("load");
+                    if(!temp.equals("%%%"));
+                    {
+                        goButtonClick(temp);
+                    }
+                }
+                break;
+            }
+        }
     }
 
 }

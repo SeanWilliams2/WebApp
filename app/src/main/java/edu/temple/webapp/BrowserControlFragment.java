@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 /**
@@ -67,10 +68,24 @@ public class BrowserControlFragment extends Fragment {
                 ((tabButtonClickInterface) getActivity()).tabButtonClick();
             }
         });
+        ImageButton bookmarkPageButton = (ImageButton) l.findViewById(R.id.bookmarkPage);
+        bookmarkPageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                ((tabButtonClickInterface) getActivity()).openActivity();
+            }
+        });
+        ImageButton saveBookmarkButton = (ImageButton) l.findViewById(R.id.saveBookmark);
+        saveBookmarkButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                ((tabButtonClickInterface) getActivity()).saveBookmark();
+            }
+        });
         return l;
     }
 
     interface tabButtonClickInterface {
         void tabButtonClick();
+        void openActivity();
+        void saveBookmark();
     }
 }
