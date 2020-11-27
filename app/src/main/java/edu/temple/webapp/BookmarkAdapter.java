@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +56,7 @@ public class BookmarkAdapter extends BaseAdapter implements ListAdapter {
         listItemText.setText(list.get(position));
 
         //Handle buttons and add onClickListeners
-        Button deleteBtn = (Button) view.findViewById(R.id.delete_btn);
+        ImageButton deleteBtn = (ImageButton) view.findViewById(R.id.delete_btn);
 
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {

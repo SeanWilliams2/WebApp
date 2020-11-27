@@ -21,11 +21,11 @@ public class BookmarkActivity extends AppCompatActivity {
     private static ArrayList<String> urls;
     private static ArrayList<String> tempBookmarks;
     private static ArrayList<String> tempUrls;
+    private boolean setBookmark = false;
     File file;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bookmark_activity);
-
 
         bookmarks = PrefConfig.readTitleFromPref(this);
         if(bookmarks == null)
@@ -37,10 +37,15 @@ public class BookmarkActivity extends AppCompatActivity {
         tempBookmarks = getIntent().getStringArrayListExtra("bookmarks");
         tempUrls = getIntent().getStringArrayListExtra("urls");
 
+
         if(tempBookmarks != null)
             bookmarks.addAll(tempBookmarks);
-        if(tempUrls != null)
+        if(tempUrls != null) {
             urls.addAll(tempUrls);
+        }
+
+
+
 
         Intent resultIntent = new Intent();
 
@@ -72,4 +77,6 @@ public class BookmarkActivity extends AppCompatActivity {
         super.onPause();
         PrefConfig.writeListInPref(getApplicationContext(),urls,bookmarks);
     }
+
+
 }

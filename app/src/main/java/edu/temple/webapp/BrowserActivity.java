@@ -63,23 +63,17 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
                                 .beginTransaction()
                                 .add(R.id.page_list, pagelist)
                                 .commit();
-                        pagelist.updateWebsites(websites);
-
                     }
                     else
                     {
                         pagelist = (PageListFragment) getSupportFragmentManager().findFragmentById(R.id.page_list);
-                        pagelist.updateWebsites(websites);
-
                     }
-                    
+                pagelist.updateWebsites(websites);
                 pageControler = (PageControlFragment) getSupportFragmentManager().findFragmentById(R.id.page_controller);
                 pagerfragment = (PagerFragment) getSupportFragmentManager().findFragmentById(R.id.page_viewer);
                 browsercontrol = (BrowserControlFragment) getSupportFragmentManager().findFragmentById(R.id.browser_control);
             }
-                
-
-            }
+    }
 
 
 
@@ -163,11 +157,11 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        bookmarks.clear();
+        urls.clear();
         switch(requestCode) {
             case (2) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    bookmarks.clear();
-                    urls.clear();
                     String temp = data.getStringExtra("load");
                     if(!temp.equals(""));
                     {

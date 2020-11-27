@@ -1,5 +1,6 @@
 package edu.temple.webapp;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,6 +26,9 @@ public class BrowserControlFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    ImageButton saveBookmarkButton;
+    ImageButton bookmarkPageButton;
+    ImageButton tabButton;
 
     public BrowserControlFragment() {
         // Required empty public constructor
@@ -60,26 +64,36 @@ public class BrowserControlFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View l =  inflater.inflate(R.layout.fragment_browser_control, container, false);
-        ImageButton tabButton = (ImageButton) l.findViewById(R.id.tabButton);
+        tabButton = (ImageButton) l.findViewById(R.id.tabButton);
         tabButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 ((tabButtonClickInterface) getActivity()).tabButtonClick();
             }
         });
-        ImageButton bookmarkPageButton = (ImageButton) l.findViewById(R.id.bookmarkPage);
+        bookmarkPageButton = (ImageButton) l.findViewById(R.id.bookmarkPage);
         bookmarkPageButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 ((tabButtonClickInterface) getActivity()).openActivity();
             }
         });
-        ImageButton saveBookmarkButton = (ImageButton) l.findViewById(R.id.saveBookmark);
+        saveBookmarkButton = (ImageButton) l.findViewById(R.id.saveBookmark);
         saveBookmarkButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 ((tabButtonClickInterface) getActivity()).saveBookmark();
             }
         });
+
+        int currentOrientation = getResources().getConfiguration().orientation;
+        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+            setButtonsInvis();
+        }
+        else {
+              setButtonsVis();
+        }
         return l;
     }
 
@@ -87,5 +101,16 @@ public class BrowserControlFragment extends Fragment {
         void tabButtonClick();
         void openActivity();
         void saveBookmark();
+    }
+
+    public void setButtonsInvis()
+    {
+        saveBookmarkButton.setVisibility(View.INVISIBLE);
+        bookmarkPageButton.setVisibility(View.INVISIBLE);
+    }
+    public void setButtonsVis()
+    {
+        saveBookmarkButton.setVisibility(View.VISIBLE);
+        bookmarkPageButton.setVisibility(View.VISIBLE);
     }
 }
