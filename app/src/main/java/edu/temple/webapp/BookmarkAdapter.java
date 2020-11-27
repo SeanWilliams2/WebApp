@@ -22,9 +22,10 @@ public class BookmarkAdapter extends BaseAdapter implements ListAdapter {
     private Context context;
 
 
-    public BookmarkAdapter(ArrayList<String> list, Context context) {
+    public BookmarkAdapter(ArrayList<String> list, Context context, ArrayList<String> urls) {
         this.list = list;
         this.context = context;
+        this.urls = urls;
     }
 
     @Override
@@ -75,6 +76,7 @@ public class BookmarkAdapter extends BaseAdapter implements ListAdapter {
                     public void onClick(DialogInterface dialog,int which)
                     {
                         list.remove(position);
+                        urls.remove(position);
                         notifyDataSetChanged();
                     }
                 });

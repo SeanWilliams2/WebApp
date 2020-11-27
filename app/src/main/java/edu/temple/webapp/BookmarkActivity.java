@@ -41,7 +41,6 @@ public class BookmarkActivity extends AppCompatActivity {
         urls = PrefConfig.readUrlFromPref(this);
         if(urls == null)
             urls = new ArrayList<String>();
-
         tempBookmarks = getIntent().getStringArrayListExtra("bookmarks");
         tempUrls = getIntent().getStringArrayListExtra("urls");
 
@@ -55,7 +54,7 @@ public class BookmarkActivity extends AppCompatActivity {
         }
 
 
-
+        
 
 
         Intent resultIntent = new Intent();
@@ -68,7 +67,7 @@ public class BookmarkActivity extends AppCompatActivity {
             }
         });
 
-        BookmarkAdapter adapter = new BookmarkAdapter(bookmarks,this);
+        BookmarkAdapter adapter = new BookmarkAdapter(bookmarks,this, urls);
         ListView listview = (ListView) findViewById(R.id.listview);
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
