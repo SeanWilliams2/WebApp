@@ -25,7 +25,7 @@
         android:maxWidth="60dp"
         android:maxHeight="60dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/gobutton"
+        android:src="@drawable/ic_play_circle_filled_24px"
         tools:ignore="Suspicious0dp">
     </ImageButton>
 
@@ -40,7 +40,7 @@
         android:maxHeight="60dp"
         android:orientation="horizontal"
         android:scaleType="fitCenter"
-        android:src="@drawable/backwardbutton"
+        android:src="@drawable/ic_arrow_back_24px"
         tools:ignore="Suspicious0dp">
 
     </ImageButton>
@@ -55,7 +55,7 @@
         android:maxWidth="60dp"
         android:maxHeight="60dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/forwardbutton"
+        android:src="@drawable/ic_arrow_forward_24px"
         tools:ignore="Suspicious0dp">
 
     </ImageButton>

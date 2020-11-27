@@ -14,9 +14,10 @@
         android:adjustViewBounds="true"
         android:maxWidth="60dp"
         android:maxHeight="60dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:scaleType="fitCenter"
-        android:src="@drawable/tabbutton"
+        android:src="@drawable/ic_add_circle_24px"
         tools:ignore="Suspicious0dp">
 
     </ImageButton>
@@ -28,10 +29,11 @@
         android:adjustViewBounds="true"
         android:maxWidth="60dp"
         android:maxHeight="60dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:scaleType="fitCenter"
         android:layout_gravity="start"
-        android:src="@drawable/tabbutton"
+        android:src="@drawable/ic_save_24px"
         tools:ignore="Suspicious0dp">
     </ImageButton>
 
@@ -41,10 +43,11 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:maxWidth="60dp"
+        android:layout_marginTop="10dp"
         android:maxHeight="60dp"
         android:orientation="horizontal"
         android:scaleType="fitCenter"
-        android:src="@drawable/tabbutton"
+        android:src="@drawable/ic_bookmark_24px"
         android:layout_gravity="end"
         tools:ignore="Suspicious0dp">
     </ImageButton>

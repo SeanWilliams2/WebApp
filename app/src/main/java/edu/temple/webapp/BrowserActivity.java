@@ -29,7 +29,8 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+            bookmarks.clear();
+            urls.clear();
             setContentView(R.layout.activity_main);
             if(getSupportFragmentManager().findFragmentById(R.id.page_controller) == null) //if fragment 1,2,3 are null start program
             {
@@ -51,7 +52,6 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
                             .beginTransaction()
                             .add(R.id.page_list, pagelist)
                             .commit();
-                    //pagelist.updateWebsites(websites);
                 }
             }
             else //else we already have instances
@@ -166,9 +166,10 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
         switch(requestCode) {
             case (2) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    bookmarks = data.getStringArrayListExtra("bookmarks");
+                    bookmarks.clear();
+                    urls.clear();
                     String temp = data.getStringExtra("load");
-                    if(!temp.equals("%%%"));
+                    if(!temp.equals(""));
                     {
                         goButtonClick(temp);
                     }
