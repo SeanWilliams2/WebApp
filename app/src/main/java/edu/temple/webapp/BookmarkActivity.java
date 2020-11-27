@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
@@ -26,7 +27,14 @@ public class BookmarkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bookmark_activity);
-
+        if(savedInstanceState != null)
+        {
+            setBookmark = savedInstanceState.getBoolean("key");
+        }
+        else
+        {
+            setBookmark = false;
+        }
         bookmarks = PrefConfig.readTitleFromPref(this);
         if(bookmarks == null)
             bookmarks = new ArrayList<String>();
@@ -37,12 +45,15 @@ public class BookmarkActivity extends AppCompatActivity {
         tempBookmarks = getIntent().getStringArrayListExtra("bookmarks");
         tempUrls = getIntent().getStringArrayListExtra("urls");
 
-
-        if(tempBookmarks != null)
-            bookmarks.addAll(tempBookmarks);
-        if(tempUrls != null) {
-            urls.addAll(tempUrls);
+        if(!setBookmark){
+            if(tempBookmarks != null)
+                bookmarks.addAll(tempBookmarks);
+            if(tempUrls != null) {
+                urls.addAll(tempUrls);
+            }
+            setBookmark = true;
         }
+
 
 
 
@@ -78,5 +89,9 @@ public class BookmarkActivity extends AppCompatActivity {
         PrefConfig.writeListInPref(getApplicationContext(),urls,bookmarks);
     }
 
-
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("key", setBookmark);
+    }
 }
