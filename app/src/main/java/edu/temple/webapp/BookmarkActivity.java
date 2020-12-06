@@ -54,7 +54,7 @@ public class BookmarkActivity extends AppCompatActivity {
         }
 
 
-        
+
 
 
         Intent resultIntent = new Intent();

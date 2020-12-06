@@ -4,12 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -28,7 +34,6 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
             bookmarks.clear();
             urls.clear();
             setContentView(R.layout.activity_main);
@@ -73,16 +78,17 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
                 pagerfragment = (PagerFragment) getSupportFragmentManager().findFragmentById(R.id.page_viewer);
                 browsercontrol = (BrowserControlFragment) getSupportFragmentManager().findFragmentById(R.id.browser_control);
             }
+            Intent intent = getIntent();
+            if(intent.getData() != null) {
+            handleSendText(intent);
+            }
+
     }
-
-
-
 
     @Override
     public void goButtonClick(String str) {
         String url = pagerfragment.loadPage(str);
         pageControler.updateEditText(url);
-
     }
 
     @Override
@@ -171,6 +177,33 @@ public class BrowserActivity extends AppCompatActivity implements PageControlFra
                 break;
             }
         }
+
+
+    }
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getData().toString();
+        goButtonClick(sharedText);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actions, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.share:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, fragments.get(pagerfragment.getLastPosition()).getURL());
+                sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                startActivity(shareIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
